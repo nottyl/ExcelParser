@@ -21,6 +21,7 @@ def init(input_file):
 
 # Main parsing function. Please always execute this function.
 def filter_and_sort(input_file):
+    print("[Filtering and sorting...]")
     new_data = {"六字學校": [], "報名賽制": [], "分隊": [], "身份": [], "中文名字": [], "English Name": []}
 
     workbook = pd.read_excel(input_file)
@@ -83,18 +84,20 @@ def filter_and_sort(input_file):
 
     new_workbook = pd.DataFrame.from_dict(new_data)
     new_workbook.to_excel('output_file.xlsx', index=False)
+    print("[Filtered and sorted through the .xlsx file!]")
 
 
 # Sort by categories then put individual categories into a new sheet
 def split_categories(input_file):
     workbook = pd.read_excel(input_file)
     categories = workbook['報名賽制'].unique()
-    with pd.ExcelWriter('output_file.xlsx') as writer:
+    with pd.ExcelWriter('output_file1.xlsx') as writer:
         for category in categories:
             category_sheet = pd.DataFrame(columns=workbook.columns)
             category_data = workbook.loc[workbook['報名賽制'] == category]
-            category_sheet = category_sheet.append(category_data)
+            category_sheet = pd.concat([category_sheet, category_data])
             category_sheet.to_excel(writer, sheet_name=category, index=False)
+    print("[Splitting the workbook based on the categories]")
 
 
 # Sort by categories in the same sheet
@@ -102,3 +105,6 @@ def sort_categories(input_file):
     workbook = pd.read_excel(input_file)
     workbook_sorted = workbook.sort_values(by=['報名賽制'], kind='mergesort')
     workbook_sorted.to_excel('output_file.xlsx', index=False)
+    print("[Sorting the workbook based on the categories]")
+
+#TODO: formatting
