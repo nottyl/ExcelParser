@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 # Initialization of the input_file for better parsing experience
 def init(input_file):
     # Please rename the Excel file to read as 'input_file'
@@ -21,12 +20,12 @@ def init(input_file):
 
 
 # Main parsing function. Please always execute this function.
-def generate_new_file(input_file):
+def filter_and_sort(input_file):
     new_data = {"六字學校": [], "報名賽制": [], "分隊": [], "身份": [], "中文名字": [], "English Name": []}
 
-    df = pd.read_excel(input_file)
+    workbook = pd.read_excel(input_file)
 
-    for index, row in df.iterrows():
+    for index, row in workbook.iterrows():
         num_columns = int((len(row.dropna()) - 3) / 2)
 
         col_2_value = row[1]
@@ -43,7 +42,7 @@ def generate_new_file(input_file):
             new_data["English Name"].append("")
 
     i = 0
-    for index, row in df.iterrows():
+    for index, row in workbook.iterrows():
 
         for col in [8, 10, 12, 14, 16, 18, 4, 6]:
             col_value = row[col]
@@ -73,7 +72,7 @@ def generate_new_file(input_file):
                 i += 1
 
     j = 0
-    for index, row in df.iterrows():
+    for index, row in workbook.iterrows():
         for col in [7, 9, 11, 13, 15, 17, 3, 5]:
             col_value = row[col]
             if pd.isna(col_value):
@@ -82,25 +81,24 @@ def generate_new_file(input_file):
                 new_data["中文名字"][j] = col_value
                 j += 1
 
-    new_df = pd.DataFrame.from_dict(new_data)
-    new_df.to_excel('output_file.xlsx', index=False)
+    new_workbook = pd.DataFrame.from_dict(new_data)
+    new_workbook.to_excel('output_file.xlsx', index=False)
 
 
 # Sort by categories then put individual categories into a new sheet
 def split_categories(input_file):
-    df = pd.read_excel(input_file)
-    categories = df['報名賽制'].unique()
+    workbook = pd.read_excel(input_file)
+    categories = workbook['報名賽制'].unique()
     with pd.ExcelWriter('output_file.xlsx') as writer:
         for category in categories:
-
-            category_sheet = pd.DataFrame(columns=df.columns)
-            category_data = df.loc[df['報名賽制'] == category]
+            category_sheet = pd.DataFrame(columns=workbook.columns)
+            category_data = workbook.loc[workbook['報名賽制'] == category]
             category_sheet = category_sheet.append(category_data)
             category_sheet.to_excel(writer, sheet_name=category, index=False)
 
 
 # Sort by categories in the same sheet
 def sort_categories(input_file):
-    df = pd.read_excel(input_file)
-    df_sorted = df.sort_values(by=['報名賽制'], kind='mergesort')
-    df_sorted.to_excel('output_file.xlsx', index=False)
+    workbook = pd.read_excel(input_file)
+    workbook_sorted = workbook.sort_values(by=['報名賽制'], kind='mergesort')
+    workbook_sorted.to_excel('output_file.xlsx', index=False)
