@@ -1,7 +1,4 @@
-/output_file.xlsx
-/input_file.xlsx
-/parsed_file.xlsx
-/~$output_file.xlsx
+/*.xlsx
 **/.idea
 **/.DS_Store
 /dist/

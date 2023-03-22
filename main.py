@@ -7,3 +7,7 @@ parse.init('input_file.xlsx')
 
 # Start reformatting the data of the parsed_file.xlsx
 parse.generate_new_file('parsed_file.xlsx')
+
+#Start splitting the categories into different sheets
+# parse.split_categories('output_file.xlsx')
+parse.sort_categories('output_file.xlsx')

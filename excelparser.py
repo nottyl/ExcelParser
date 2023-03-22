@@ -1,6 +1,7 @@
 import pandas as pd
 
 
+# Initialization of the input_file for better parsing experience
 def init(input_file):
     # Please rename the Excel file to read as 'input_file'
     workbook = pd.read_excel(input_file)
@@ -13,13 +14,13 @@ def init(input_file):
     workbook = workbook.iloc[:, columns_to_keep]
     print("Column names in workbook:", workbook.columns)
 
-    # Write the modified data to a new Excel file
     with pd.ExcelWriter('parsed_file.xlsx') as writer:
         workbook.to_excel(writer, index=False)
         print("\n[Output generated!]\n")
         print(workbook.head())
 
 
+# Main parsing function. Please always execute this function.
 def generate_new_file(input_file):
     new_data = {"六字學校": [], "報名賽制": [], "分隊": [], "身份": [], "中文名字": [], "English Name": []}
 
@@ -83,3 +84,23 @@ def generate_new_file(input_file):
 
     new_df = pd.DataFrame.from_dict(new_data)
     new_df.to_excel('output_file.xlsx', index=False)
+
+
+# Sort by categories then put individual categories into a new sheet
+def split_categories(input_file):
+    df = pd.read_excel(input_file)
+    categories = df['報名賽制'].unique()
+    with pd.ExcelWriter('output_file.xlsx') as writer:
+        for category in categories:
+
+            category_sheet = pd.DataFrame(columns=df.columns)
+            category_data = df.loc[df['報名賽制'] == category]
+            category_sheet = category_sheet.append(category_data)
+            category_sheet.to_excel(writer, sheet_name=category, index=False)
+
+
+# Sort by categories in the same sheet
+def sort_categories(input_file):
+    df = pd.read_excel(input_file)
+    df_sorted = df.sort_values(by=['報名賽制'], kind='mergesort')
+    df_sorted.to_excel('output_file.xlsx', index=False)
