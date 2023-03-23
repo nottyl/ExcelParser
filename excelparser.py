@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 # Initialization of the input_file for better parsing experience
 def init(input_file):
     # Please rename the Excel file to read as 'input_file'
@@ -91,7 +92,7 @@ def filter_and_sort(input_file):
 def split_categories(input_file):
     workbook = pd.read_excel(input_file)
     categories = workbook['報名賽制'].unique()
-    with pd.ExcelWriter('output_file1.xlsx') as writer:
+    with pd.ExcelWriter('output_split.xlsx') as writer:
         for category in categories:
             category_sheet = pd.DataFrame(columns=workbook.columns)
             category_data = workbook.loc[workbook['報名賽制'] == category]
@@ -107,4 +108,7 @@ def sort_categories(input_file):
     workbook_sorted.to_excel('output_file.xlsx', index=False)
     print("[Sorting the workbook based on the categories]")
 
-#TODO: formatting
+# TODO: formatting the Excel file
+def format_file(input_file):
+    workbook = pd.ExcelWriter(input_file, engine='xlsxwriter')
+    
