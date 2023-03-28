@@ -2,6 +2,9 @@
 A very niche excel parsing program.  
 This program is written to parse and filter through the `.xlsx` file exported by Google Forms.
 
+## Warning
+If you're someone who I wrote this code for, this branch is for you! You just need to read the instruction and execute the script.
+
 ## Input
 The program requires a `.xlsx` file named `input_file.xlsx` to run.
 Please name the file you want to parse as `input_file.xlsx` and put it into the **same directory** of the program.
@@ -13,7 +16,7 @@ Please name the file you want to parse as `input_file.xlsx` and put it into the 
 4. You should have the output file in no time!
 
 
-| ❗️  | It is worth noting that this code was written very specifically for one Google Form responses. You should edit the code first before running it on any other type of `.xlsx` files. |
+| ❗️  | It is worth noting that this code was written very specifically for one Google Form responses. You should always read through the code and edit it before running it on any other type of `.xlsx` files. |
 |-----|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 

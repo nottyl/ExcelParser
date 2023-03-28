@@ -13,3 +13,4 @@ parse.split_categories('output_file.xlsx')
 parse.sort_categories('output_file.xlsx')
 
 # Formatting the spreadsheets
+# TODO: Add formatting function (Borders, Merge cells, Font)
