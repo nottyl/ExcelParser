@@ -94,34 +94,32 @@ def filter_and_sort(input_file):
     new_workbook = pd.DataFrame.from_dict(new_data)
     new_workbook.to_excel('output_file.xlsx', index=False)
 
-    df = pd.read_excel('output_file.xlsx')
-    new_df = split_column(df, '中文名字')
-    new_df.to_excel('output_file.xlsx', index=False)
     print("[Filtered and sorted through the .xlsx file!]")
 
 
 # Sort by categories then put individual categories into a new sheet
-def split_categories(input_file):
+def split_categories(input_file, cat_to_split):
     workbook = pd.read_excel(input_file)
-    categories = workbook['報名賽制'].unique()
+    categories = workbook[cat_to_split].unique()
     with pd.ExcelWriter('output_split.xlsx') as writer:
         for category in categories:
             category_sheet = pd.DataFrame(columns=workbook.columns)
-            category_data = workbook.loc[workbook['報名賽制'] == category]
+            category_data = workbook.loc[workbook[cat_to_split] == category]
             category_sheet = pd.concat([category_sheet, category_data])
             category_sheet.to_excel(writer, sheet_name=category, index=False)
     print("[Splitting the workbook based on the categories]")
 
 
 # Sort by categories in the same sheet
-def sort_categories(input_file):
+def sort_categories(input_file, cat_to_split):
     workbook = pd.read_excel(input_file)
-    workbook_sorted = workbook.sort_values(by=['報名賽制'], kind='mergesort')
+    workbook_sorted = workbook.sort_values(by=[cat_to_split], kind='mergesort')
     workbook_sorted.to_excel('output_file.xlsx', index=False)
     print("[Sorting the workbook based on the categories]")
 
 
-def split_column(df, column_name):
+def split_column(input_file, column_name):
+    df = pd.read_excel(input_file)
     new_df = df.copy()
 
     split_rows = new_df[new_df[column_name].str.contains('/|、')]
@@ -132,8 +130,7 @@ def split_column(df, column_name):
 
     new_df = pd.concat([new_df.drop(split_rows.index), new_rows])
     new_df = new_df.sort_index().reset_index(drop=True)
-
-    return new_df
-
+    new_df.to_excel('output_file.xlsx', index=False)
+    print("[Splitting columns containing '/' or '、']")
 
 

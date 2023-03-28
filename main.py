@@ -6,10 +6,13 @@ columns = [2, 3, 5, 11, 25, 26, 28, 29, 31, 32, 34, 35, 37, 38, 40, 41, 43, 44, 
 parse.init('input_file.xlsx',  columns)
 
 # Start reformatting the data of the parsed_file.xlsx
+col_to_split = input("Enter the column that needs splitting: ")
 parse.filter_and_sort('parsed_file.xlsx')
+parse.split_column('output_file.xlsx', col_to_split)
 
 # Start splitting the categories into different sheets
-parse.split_categories('output_file.xlsx')
-parse.sort_categories('output_file.xlsx')
+cat_to_split = input("Enter the category name to split: ")
+parse.split_categories('output_file.xlsx', cat_to_split)
+parse.sort_categories('output_file.xlsx', cat_to_split)
 
 # Formatting the spreadsheets
